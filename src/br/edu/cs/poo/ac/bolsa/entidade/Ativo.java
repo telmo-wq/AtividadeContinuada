@@ -1,7 +1,7 @@
 package br.edu.cs.poo.ac.bolsa.entidade;
-import java.io.Serializable;
+import br.edu.cs.poo.ac.bolsa.util.Registro;
 
-public class Ativo implements Serializable{
+public class Ativo extends Registro {
 	private long codigo;
 	private String descricao;
 	private double valorMinimoAplicacao;
@@ -10,8 +10,14 @@ public class Ativo implements Serializable{
 	private double taxaMensalMaxima;
 	private FaixaRenda faixaMinimaPermitida;
 	private int prazoEmMeses;
-	
-	
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public String getIdentificador(){
+		return String.valueOf(getCodigo());
+	}
+
+
 	public long getCodigo() {
 		return codigo;
 	}
@@ -60,10 +66,18 @@ public class Ativo implements Serializable{
 	public void setPrazoEmMeses(int prazoEmMeses) {
 		this.prazoEmMeses = prazoEmMeses;
 	}
-	
-	
-	public Ativo(long codigo, String descricao, double valorMinimoAplicacao, double valorMaximoAplicacao, double taxaMensalMinima, double taxaMensalMaxima, FaixaRenda faixaMinimaPermitida, int prazoEmMeses) {
+
+
+	public Ativo(){
+
+	}
+
+	public Ativo(long codigo, String descricao, double valorMinimoAplicacao,
+	             double valorMaximoAplicacao, double taxaMensalMinima,
+	             double taxaMensalMaxima, FaixaRenda faixaMinimaPermitida,
+	             int prazoEmMeses) {
 		this.codigo = codigo;
+		this.descricao = descricao;
 		this.valorMinimoAplicacao = valorMinimoAplicacao;
 		this.valorMaximoAplicacao = valorMaximoAplicacao;
 		this.taxaMensalMinima = taxaMensalMinima;
@@ -71,5 +85,5 @@ public class Ativo implements Serializable{
 		this.faixaMinimaPermitida = faixaMinimaPermitida;
 		this.prazoEmMeses = prazoEmMeses;
 	}
-	
+
 }
