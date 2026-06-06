@@ -1,8 +1,10 @@
 package br.edu.cs.poo.ac.bolsa.entidade;
+import br.edu.cs.poo.ac.bolsa.util.Comparavel;
+
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
-public class InvestidorPessoa extends Investidor {
+public class InvestidorPessoa extends Investidor implements Comparavel {
 	private String cpf;
 	private double renda;
 	private FaixaRenda faixaRenda;
@@ -46,5 +48,23 @@ public class InvestidorPessoa extends Investidor {
 	}
 	
 	public InvestidorPessoa() {
+	}
+
+	public int comparar(Comparavel comp){
+		if (!(comp instanceof InvestidorPessoa)){
+			throw new RuntimeException("O argumento nao e do tipo InvestidorPessoa");
+
+		}
+		InvestidorPessoa inv1 = (InvestidorPessoa) comp;
+
+		if (this.getNome().compareTo(inv1.getNome()) > 0){
+			return 1;
+		}else if (this.getNome().compareTo(inv1.getNome()) < 0){
+			return -1;
+		}
+
+		return 0;
+
+
 	}
 }

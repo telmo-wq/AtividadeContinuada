@@ -203,7 +203,7 @@ public class InvestidorMediator {
 		msgs = validarInvestidorPessoa(ip);
 		
 		if(msgs.estaVazio() == true) {
-			if (daoInvPes.incluir(ip) == false) {
+			if (daoInvPes.incluirInvestidorPessoa(ip) == false) {
 				msgs.adicionar("Investidor Pessoa já existente.");
 			}
 		}
@@ -243,5 +243,24 @@ public class InvestidorMediator {
 		}else {
 			return daoInvPes.buscar(cpf);
 		}
+	}
+
+	public InvestidorPessoa[] consultarInvestidorPessoa(
+			OrdenacaoInvestidorPessoa criterio
+	){
+		InvestidorPessoa[] array = daoInvPes.consultarTodos();
+
+		if (criterio.getCodigo() == 1){
+			ComparadorGenerico compGenerico = new ComparadorGenerico();
+			Ordenador.ordenar(array, compGenerico);
+			return array;
+		}else if (criterio.getCodigo() == 2){
+			ComparadorInvestidorPessoaRenda compRenda =
+					new ComparadorInvestidorPessoaRenda();
+			Ordenador.ordenar(array, compRenda);
+			return array;
+		}
+
+		return null;
 	}
 }
