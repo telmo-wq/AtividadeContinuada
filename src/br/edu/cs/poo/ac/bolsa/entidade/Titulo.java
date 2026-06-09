@@ -137,10 +137,10 @@ public class Titulo extends Registro implements Serializable {
 	public String getNumero(){
 		if (investidor.getIdentificador().length() == 11){
 			return "000" + investidor.getIdentificador() + ativo.getCodigo() +
-					dataAplicacao.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+					dataAplicacao.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "0000";
 		}else if (investidor.getIdentificador().length() == 14){
 			return investidor.getIdentificador() + ativo.getCodigo() +
-					dataAplicacao.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+					dataAplicacao.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "0000";
 		}
 
 		return null;
