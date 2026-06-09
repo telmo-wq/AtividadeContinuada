@@ -8,35 +8,35 @@ public class InvestidorPessoa extends Investidor implements Comparavel {
 	private String cpf;
 	private double renda;
 	private FaixaRenda faixaRenda;
-	
+
 	public String getCpf() {
 		return cpf;
 	}
-	
+
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
+
 	public double getRenda() {
 		return renda;
 	}
-	
+
 	public void setRenda(double renda) {
 		this.renda = renda;
 	}
-	
+
 	public FaixaRenda getFaixaRenda() {
 		return faixaRenda;
 	}
-	
+
 	public void setFaixaRenda(FaixaRenda faixaRenda) {
 		this.faixaRenda = faixaRenda;
 	}
-	
+
 	public LocalDate getDataNascimento() {
 		return super.getDataCriacao();
 	}
-	
+
 	public void setDataNascimento(LocalDate dataNascimento) {
 		super.setDataCriacao(dataNascimento);
 	}
@@ -46,7 +46,7 @@ public class InvestidorPessoa extends Investidor implements Comparavel {
 		this.renda = renda;
 		this.faixaRenda = faixaRenda;
 	}
-	
+
 	public InvestidorPessoa() {
 	}
 
@@ -64,7 +64,15 @@ public class InvestidorPessoa extends Investidor implements Comparavel {
 		}
 
 		return 0;
+	}
 
+	@Override
+	public String getIdentificador(){
+		return cpf;
+	}
 
+	@Override
+	public BigDecimal getEntradaFinanceira(){
+		return BigDecimal.valueOf(renda);
 	}
 }

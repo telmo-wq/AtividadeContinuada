@@ -1,12 +1,9 @@
 package br.edu.cs.poo.ac.bolsa.testes;
 
 import org.junit.jupiter.api.BeforeEach;
-
 import org.junit.jupiter.api.Test;
 
 import br.edu.cs.poo.ac.bolsa.entidade.Ativo;
-import br.edu.cs.poo.ac.bolsa.entidade.Contatos;
-import br.edu.cs.poo.ac.bolsa.entidade.Endereco;
 import br.edu.cs.poo.ac.bolsa.entidade.FaixaRenda;
 import br.edu.cs.poo.ac.bolsa.entidade.InvestidorEmpresa;
 import br.edu.cs.poo.ac.bolsa.entidade.InvestidorPessoa;
@@ -20,27 +17,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TituloTest {
 
-    private InvestidorPessoa pessoa; 
+    private InvestidorPessoa pessoa;
     private InvestidorEmpresa empresa;
     private Ativo ativo = new Ativo(1010,"Ativo 1", 1000.0, 10000000.0, 0.1, 4.0, FaixaRenda.REGULAR, 120);
 
     @BeforeEach
     void setup() {
         pessoa = new InvestidorPessoa(
-        		"MARCOS", null, null, BigDecimal.ZERO, null,
-                        "12345678901", 30000.00, FaixaRenda.REGULAR);        		        		
+                "MARCOS", null, null, BigDecimal.ZERO, null,
+                "12345678901", 30000.00, FaixaRenda.REGULAR);
         empresa = new InvestidorEmpresa(
-        		"ACME", null, null,BigDecimal.ZERO, null,
+                "ACME", null, null,BigDecimal.ZERO, null,
                 "12345678901234", 3000000.00);
         ativo = new Ativo(
-        		123456, "C-BONDS",10000.00, 1000000000.00,
+                123456, "C-BONDS",10000.00, 1000000000.00,
                 0.10, 1.00,FaixaRenda.REGULAR, 24);
     }
 
     private Titulo criarTituloPadrao() {
         return new Titulo(
                 pessoa,
-                empresa,
                 ativo,
                 new BigDecimal("1000.00"),     // valorInvestido
                 new BigDecimal("1000.00"),     // valorAtual
@@ -157,13 +153,12 @@ public class TituloTest {
                 BigDecimal.ZERO, null, null, 100000.0, FaixaRenda.DIFERENCIADA);
         pessoa.setCpf("12345678901");
 
-        
+
 
         LocalDate dataAplicacao = LocalDate.of(2024, 3, 10);
 
         Titulo titulo = new Titulo(
                 pessoa,
-                null,
                 ativo,
                 BigDecimal.TEN,
                 BigDecimal.TEN,
@@ -193,7 +188,6 @@ public class TituloTest {
         LocalDate dataAplicacao = LocalDate.of(2024, 5, 20);
 
         Titulo titulo = new Titulo(
-                null,
                 empresa,
                 ativo,
                 BigDecimal.TEN,

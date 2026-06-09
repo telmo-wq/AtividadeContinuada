@@ -8,11 +8,11 @@ public class DAOInvestidorPessoa extends DAOGenerico {
 	public DAOInvestidorPessoa() {
 		inicializarCadastro(InvestidorPessoa.class);
 	}
-	
+
 	public InvestidorPessoa buscar(String cpf) {
 		return (InvestidorPessoa)cadastro.buscar("" + cpf);
 	}
-	
+
 	public boolean incluirInvestidorPessoa(InvestidorPessoa investidorPessoa) {
 		if(buscar(investidorPessoa.getCpf()) == null) {
 			cadastro.incluir(investidorPessoa, "" + investidorPessoa.getCpf());
@@ -21,7 +21,7 @@ public class DAOInvestidorPessoa extends DAOGenerico {
 			return false;
 		}
 	}
-	
+
 	public boolean alterar(InvestidorPessoa investidorPessoa) {
 		if(buscar(investidorPessoa.getCpf()) != null) {
 			cadastro.alterar(investidorPessoa, "" + investidorPessoa.getCpf());
@@ -30,7 +30,7 @@ public class DAOInvestidorPessoa extends DAOGenerico {
 			return false;
 		}
 	}
-	
+
 	public boolean excluir(String cpf) {
 		if(buscar(cpf) != null) {
 			cadastro.excluir("" + cpf);
