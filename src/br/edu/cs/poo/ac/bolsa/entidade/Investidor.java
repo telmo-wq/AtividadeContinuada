@@ -71,12 +71,18 @@ public abstract class Investidor extends Registro implements Serializable {
 		if (valor == null || valor.compareTo(BigDecimal.ZERO) == 0) {
 			return;
 		}
+		if (bonus == null){
+			bonus = BigDecimal.ZERO;
+		}
 		bonus = bonus.add(valor);
 	}
 
 	public void debitarBonus(BigDecimal valor) {
 		if(valor == null || valor.compareTo(BigDecimal.ZERO) == 0) {
 			return;
+		}
+		if (bonus == null){
+			bonus = BigDecimal.ZERO;
 		}
 		bonus = bonus.subtract(valor);
 	}

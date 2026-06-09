@@ -46,11 +46,10 @@ public class DAO<T extends Registro> extends DAOGenerico{
     public T[] buscarTodos(){
         Serializable[] resultado = cadastro.buscarTodos();
 
-        if (resultado == null){
+        if (resultado == null || resultado.length == 0){
             return null;
         }
-
-        T[] novoArray = (T[]) new Serializable[resultado.length];
+        T[] novoArray = (T[]) java.lang.reflect.Array.newInstance(resultado[0].getClass(), resultado.length);
 
         for (int i = 0; i < resultado.length; i++){
             novoArray[i] = (T) resultado[i];

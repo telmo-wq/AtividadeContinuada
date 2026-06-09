@@ -3,6 +3,7 @@ package br.edu.cs.poo.ac.bolsa.negocio;
 import br.edu.cs.poo.ac.bolsa.entidade.*;
 import br.edu.cs.poo.ac.bolsa.dao.DAO;
 import br.edu.cs.poo.ac.bolsa.util.ExcecaoNegocio;
+import br.edu.cs.poo.ac.bolsa.util.ExcecaoOobjetoNaoExistente;
 import br.edu.cs.poo.ac.bolsa.util.MensagensValidacao;
 import br.edu.cs.poo.ac.bolsa.util.ExcecaoObjetoJaExistente;
 
@@ -35,35 +36,43 @@ public class TituloMediator {
         MensagensValidacao msgs = new MensagensValidacao();
 
         if (dados.getCpfOuCnpj() == null || dados.getCpfOuCnpj().isBlank()){
-            msgs.adicionar("CPF/CNPJ é obrigatório.");
+            msgs.adicionar("CPF/CNPJ inválido");
         }
         if (dados.getCodigoAtivo() <= 0){
-            msgs.adicionar("Código do ativo deve ser maior que zero.");
+            msgs.adicionar("Código do ativo inválido");
         }
         if (dados.getValorInvestido() == null){
-            msgs.adicionar("Valor investido é obrigatório.");
+            msgs.adicionar("Valor investido não pode ser nulo");
         }
         if (dados.getTaxaDiaria() == null){
-            msgs.adicionar("Taxa diária é obrigatória.");
+            msgs.adicionar("Taxa diária não pode ser nula");
+        }
+
+        if (!msgs.estaVazio()){
+            throw new ExcecaoNegocio(msgs);
         }
 
         Ativo ativo = ativoMediator.buscar(dados.getCodigoAtivo());
         if (ativo == null){
-            msgs.adicionar("Ativo não encontrado.");
+            msgs.adicionar("Ativo não encontrado");
         }
 
         Investidor investidor = investidorMediator.buscarInvestidor(dados.getCpfOuCnpj());
         if (investidor == null){
-            msgs.adicionar("Investidor não encontrado.");
+            msgs.adicionar("Investidor não encontrado");
+        }
+
+        if (!msgs.estaVazio()){
+            throw new ExcecaoNegocio(msgs);
         }
 
         if (ativo != null && investidor != null){
             if (dados.getValorInvestido().compareTo(BigDecimal.valueOf(ativo.getValorMinimoAplicacao())) < 0) {
-                msgs.adicionar("Valor investido abaixo do mínimo.");
+                msgs.adicionar("Valor investido fora da faixa permitida");
             }
 
             if (dados.getValorInvestido().compareTo(BigDecimal.valueOf(ativo.getValorMaximoAplicacao())) > 0) {
-                msgs.adicionar("Valor investido acima do máximo.");
+                msgs.adicionar("Valor investido fora da faixa permitida");
             }
 
             double taxaDiaria = dados.getTaxaDiaria().doubleValue();
@@ -112,19 +121,29 @@ public class TituloMediator {
         Titulo titulo = daoTitulo.buscar(numero);
 
         if (titulo == null){
-            msgs.adicionar("Título não encontrado.");
+            msgs.adicionar("Título não encontrado");
             throw new ExcecaoNegocio(msgs);
         }
-        if (titulo.getStatus() != StatusTitulo.VENCIDO &&
-                titulo.getStatus() != StatusTitulo.CANCELADO){
-            titulo.setStatus(StatusTitulo.CANCELADO);
-            daoTitulo.alterar(titulo);
-
-            Investidor investidor = investidorMediator.buscarInvestidor(titulo.getInvestidor().getIdentificador());
-            BigDecimal debito = titulo.getValorAtual().multiply(BigDecimal.valueOf(0.70));
-            investidor.debitarBonus(debito);
-            investidorMediator.alterarInvestidor(investidor);
+        if (titulo.getStatus() == StatusTitulo.VENCIDO ||
+                titulo.getStatus() == StatusTitulo.CANCELADO) {
+            msgs.adicionar("Título não pode ser cancelado");
+            throw new ExcecaoNegocio(msgs);
         }
+
+        titulo.setStatus(StatusTitulo.CANCELADO);
+        try {
+            daoTitulo.alterar(titulo);
+        }catch (ExcecaoOobjetoNaoExistente e){
+            msgs.adicionar("Erro ao alterar titulo");
+            throw new ExcecaoNegocio(msgs);
+        }
+
+
+        Investidor investidor = investidorMediator.buscarInvestidor(titulo.getInvestidor().getIdentificador());
+        BigDecimal debito = titulo.getValorAtual().multiply(BigDecimal.valueOf(0.07));
+        investidor.debitarBonus(debito);
+        investidorMediator.alterarInvestidor(investidor);
+
     }
 
     public void processarRendimentos(){

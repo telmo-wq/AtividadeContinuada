@@ -1,5 +1,6 @@
 package br.edu.cs.poo.ac.bolsa.dao;
 
+import br.edu.cs.poo.ac.bolsa.entidade.InvestidorEmpresa;
 import br.edu.cs.poo.ac.bolsa.entidade.InvestidorPessoa;
 
 import java.io.Serializable;
@@ -46,7 +47,6 @@ public class DAOInvestidorPessoa extends DAOGenerico {
 		if (resultado == null){
 			return null;
 		}
-
 		InvestidorPessoa[] novoArray;
 		novoArray = new InvestidorPessoa[resultado.length];
 
@@ -55,5 +55,9 @@ public class DAOInvestidorPessoa extends DAOGenerico {
 		}
 
 		return novoArray;
+	}
+
+	public InvestidorPessoa buscarInvestidorPessoa(String cpf){
+		return buscar(cpf);
 	}
 }
